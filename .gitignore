@@ -16,6 +16,11 @@
 
 # Debugger Files
 *.pdb
+*.exe
+*.ii
+*.s
+*.o
+
 
 # Compiled Dynamic libraries
 *.so
