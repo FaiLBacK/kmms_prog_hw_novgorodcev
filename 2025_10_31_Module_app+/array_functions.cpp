@@ -4,19 +4,19 @@
 #include "constants.hpp"
 #include "array_functions.hpp"
 
-int* ArrayFunctions::countNumbers(int* arr, int n) {
-    int* count = new int[Constants::RANGE_SIZE]();
+int* NumberProcessor::countNumbers(const int* arr, int n) {
+    int* count = new int[NumberProcessor::RANGE_SIZE]();
     
     for (int i = 0; i < n; i++) {
-        int index = arr[i] - Constants::MIN_NUM;
-        if (index >= 0 && index < Constants::RANGE_SIZE) {
+        const int index = arr[i] - NumberProcessor::MIN_NUM;
+        if (index >= 0 && index < NumberProcessor::RANGE_SIZE) {
             count[index]++;
         }
     }
     return count;
 }
 
-int* ArrayFunctions::createNumbers(int n) {
+int* NumberProcessor::createNumbers(int n) {
     int* arr = new int[n];
     srand(time(0));
     
@@ -26,25 +26,28 @@ int* ArrayFunctions::createNumbers(int n) {
     return arr;
 }
 
-void ArrayFunctions::freeMemory(int* arr1, int* arr2, int* arr3) {
+void NumberProcessor::freeMemory(int* arr1, int* arr2, int* arr3) {
     delete[] arr1;
     delete[] arr2;
     delete[] arr3;
 }
 
-int ArrayFunctions::getCount(int* prefix, int left, int right) {
-    if (left < 0) left = 0;
-    if (right > Constants::RANGE_SIZE-1) right = Constants::RANGE_SIZE-1;
-    if (left > right) return 0;
+int NumberProcessor::getCount(const int* prefix, int left, int right) {
+    int adjustedLeft = left;
+    int adjustedRight = right;
     
-    if (left == 0) {
-        return prefix[right];
+    if (adjustedLeft < 0) adjustedLeft = 0;
+    if (adjustedRight > NumberProcessor::RANGE_SIZE-1) adjustedRight = NumberProcessor::RANGE_SIZE-1;
+    if (adjustedLeft > adjustedRight) return 0;
+    
+    if (adjustedLeft == 0) {
+        return prefix[adjustedRight];
     } else {
-        return prefix[right] - prefix[left-1];
+        return prefix[adjustedRight] - prefix[adjustedLeft-1];
     }
 }
 
-int* ArrayFunctions::makePrefix(int* arr, int size) {
+int* NumberProcessor::makePrefix(const int* arr, int size) {
     int* prefix = new int[size];
     prefix[0] = arr[0];
     

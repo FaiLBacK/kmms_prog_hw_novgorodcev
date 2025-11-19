@@ -15,3 +15,5 @@ g++ -c main.cpp -o main.o
 g++ main.o input_output.o array_functions.o -o %EXE%
 
 %EXE%
+
+pause

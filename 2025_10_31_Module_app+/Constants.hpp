@@ -1,7 +1,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-namespace Constants {
+namespace NumberProcessor {
     const int MAX_SIZE = 10000;
     const int MIN_NUM = 100;
     const int MAX_NUM = 199;
