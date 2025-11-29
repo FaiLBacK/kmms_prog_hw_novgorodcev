@@ -5,7 +5,6 @@
 #include "menu_functions.hpp"
 #include "menu_items.hpp"
 
-
 int main() {
 
     const NovSev::MenuItem* current = &NovSev::MAIN;
