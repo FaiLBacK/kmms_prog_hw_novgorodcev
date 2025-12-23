@@ -26,7 +26,7 @@ set arr[2].file=test.bat
 
 set arr[0].folder=bubble_sort
 set arr[1].folder=29.11.2025
-set arr[1].folder=unit_test_example
+set arr[2].folder=unit_test_example
 
 for /L %%i in (0,1) do (
 	copy ..\%SOURCE_FOLDER%\!arr[%%i].folder!\!arr[%%i].file! .\!arr[%%i].folder!
