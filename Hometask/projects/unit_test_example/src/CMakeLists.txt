@@ -7,6 +7,6 @@ target_sources(bubble_sort_lib
 		sortings.hpp
 )
 
-target_include_directories(bubble_sort_lib PUBLIC
+target_include_directories(${LIBRARY} PUBLIC
 	"${PROJECTS_SOURCE_DIR}/src"
 )

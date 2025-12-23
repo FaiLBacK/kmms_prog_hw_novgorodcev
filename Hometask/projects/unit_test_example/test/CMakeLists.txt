@@ -11,7 +11,7 @@ target_include_directories(test_bubble PRIVATE
 target_link_libraries(test_bubble
 	gtest_main
 	gmock_main
-	bubble_sort_lib
+	${LIBRARY}
 )
 
 add_test(test_bubble test_bubble)
