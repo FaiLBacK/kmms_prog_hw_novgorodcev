@@ -1,0 +1,5 @@
+if(EXISTS "C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/long_number_tests[1]_tests.cmake")
+  include("C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/long_number_tests[1]_tests.cmake")
+else()
+  add_test(long_number_tests_NOT_BUILT long_number_tests_NOT_BUILT)
+endif()

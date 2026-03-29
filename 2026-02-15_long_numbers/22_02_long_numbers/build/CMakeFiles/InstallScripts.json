@@ -1,0 +1,12 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/cmake_install.cmake",
+		"C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/src/cmake_install.cmake",
+		"C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/cmake_install.cmake",
+		"C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/googletest/cmake_install.cmake",
+		"C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/googletest/googlemock/cmake_install.cmake",
+		"C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/googletest/googletest/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

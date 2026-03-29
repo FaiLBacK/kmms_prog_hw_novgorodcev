@@ -1,0 +1,15 @@
+# ninja log v7
+12	457	7945864139027538	src/CMakeFiles/long_number.dir/long_number.cpp.obj	4627dd973a46e99a
+461	1044	7945864143517562	src/liblong_number.a	8d5a364cea3346ee
+35	1052	7945864139247554	test/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	2d27d458e37d993c
+63	1272	7945864139537557	test/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	43c2201d03128dd3
+48	1312	7945864139387552	test/CMakeFiles/long_number_tests.dir/long_number_tests.cpp.obj	ec2236dab425a2eb
+20	2040	7945864139097551	test/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	4e4a389724857fd8
+4	4589	7945864138947562	test/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	56f5047be59ffbf9
+4590	4857	7945864184807055	lib/libgtest.a	c507b65e97a87703
+4857	5183	7945864187478919	lib/libgmock.a	b7655e03fa092596
+4952	5279	7945864188423648	lib/libgtest_main.a	92f31b45f38e4b6e
+5183	6901	7945864190732235	lib/libgmock_main.a	7908255e333b1fb0
+5280	7645	7945864215119971	test/long_number_tests.exe	a37168e352a5d72a
+5280	7645	7945864215119971	test/long_number_tests[1]_tests.cmake	a37168e352a5d72a
+5280	7645	7945864215119971	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-15_long_numbers/22_02_long_numbers/build/test/long_number_tests[1]_tests.cmake	a37168e352a5d72a

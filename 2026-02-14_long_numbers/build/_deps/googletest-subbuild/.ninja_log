@@ -1,0 +1,21 @@
+# ninja log v7
+1	260	7945839644544241	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	a73fbaca4250da92
+1	260	7945839644544241	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	a73fbaca4250da92
+261	8653	7945839728484148	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	9cb1527180e0102b
+261	8653	7945839728484148	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	9cb1527180e0102b
+8653	8902	7945839728646179	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	1f272bee2be155c2
+8653	8902	7945839728646179	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	1f272bee2be155c2
+8902	9128	7945839733176763	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	ef5cff370414532f
+8902	9128	7945839733176763	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	ef5cff370414532f
+9128	9331	7945839735271803	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	48778b9d8dff81e9
+9128	9331	7945839735271803	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	48778b9d8dff81e9
+9331	9532	7945839737270337	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	554e9225e4d7698
+9331	9532	7945839737270337	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	554e9225e4d7698
+9532	9736	7945839739314158	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	11ac1dd3dcb16b02
+9532	9736	7945839739314158	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	11ac1dd3dcb16b02
+9736	9925	7945839741205025	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	6c548a8078a99223
+9736	9925	7945839741205025	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	6c548a8078a99223
+9925	10228	7945839744231604	CMakeFiles/googletest-populate-complete	234b5c18d6b1232f
+9925	10228	7945839744231604	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	234b5c18d6b1232f
+9925	10228	7945839744231604	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete	234b5c18d6b1232f
+9925	10228	7945839744231604	C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	234b5c18d6b1232f

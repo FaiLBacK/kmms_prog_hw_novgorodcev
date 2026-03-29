@@ -1,0 +1,5 @@
+# ninja log v7
+735	2540	7945839812105436	_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	6b5c8cb70f252fba
+960	2839	7945839814356811	_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	f4974c6231d72d53
+437	3879	7945839809123371	_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	6da7347fe373448c
+4	6476	7945839804797717	_deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	3eec112d971b3733

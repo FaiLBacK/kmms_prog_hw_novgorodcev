@@ -1,0 +1,14 @@
+# Target labels
+ googletest-populate
+# Source files and their labels
+C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate
+C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.rule
+C:/it/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test.rule
+C:/IT/Code/kmms_prog_hw_novgorodcev/2026-02-14_long_numbers/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update.rule
