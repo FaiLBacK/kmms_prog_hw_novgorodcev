@@ -52,25 +52,45 @@ typedef struct SObject{
 } Object;
 
 void clear_map(char map[MAP_HEIGHT][MAP_WIDTH+1]);
-void create_level(int lvl, char map[MAP_HEIGHT][MAP_WIDTH+1], Object* mario, Object** brick, int* brick_counts, Object** moving_objects, int* moving_objects_count, int* player_score, float* camera_x, int max_level);
+
+void create_level(int lvl, char map[MAP_HEIGHT][MAP_WIDTH+1], 
+                  Object* mario, 
+                  Object** brick, int* brick_counts,
+                  Object** moving_objects, int* moving_objects_count,
+                  int* player_score, float* camera_x, int max_level);
+
 void delete_moving_objects(Object** moving_objects, int* moving_objects_count, int i);
 void free_game_resources(Object** brick, Object** moving_objects);
+
 Object* get_new_brick(Object** brick, int* brick_counts);
 Object* get_new_moving_objects(Object** moving_objects, int* moving_objects_count);
-void horizontal_move_map(Object* mario, float dx, Object* brick, int brick_counts, Object* moving_objects, int moving_objects_count, float* camera_x);
+
+void horizontal_move_map(Object* mario, float dx, 
+                         Object* brick, int brick_counts,
+                         Object* moving_objects, int moving_objects_count,
+                         float* camera_x);
+
 void horizontal_move_obj(Object* obj, Object* brick, int brick_counts);
 void init_object(Object* obj, float x_pos, float y_pos, float obj_width, float obj_height, char cur_type);
-bool is_collision(Object obj_1, Object obj_2);
+
+bool is_collision(const Object* obj_1, const Object* obj_2);
 bool is_position_on_map(int x, int y);
-void mario_collision(Object* mario, Object* moving_objects, int* moving_objects_count, int* player_score, int current_level);
-void player_dead(int* current_level);
-void put_object_on_map(char map[MAP_HEIGHT][MAP_WIDTH+1], Object obj, float camera_x);
+
+void mario_collision(Object* mario, Object* moving_objects, 
+                     int* moving_objects_count, int* player_score,
+                     int* current_level);
+
+void player_dead(int* current_level, char map[25][81], Object* mario, Object** brick, int* brick_counts, Object** moving_objects, int* moving_objects_count, int* player_score, float* camera_x, int max_level);
+
+void put_object_on_map(char map[25][81], const Object* obj, float camera_x);
+
 void put_score_on_map(char map[MAP_HEIGHT][MAP_WIDTH+1], int player_score);
 void set_current_pos(int x, int y);
 void set_object_pos(Object* obj, float x_pos, float y_pos);
-void show_map(char map[MAP_HEIGHT][MAP_WIDTH+1]);
+void show_map(const char map[MAP_HEIGHT][MAP_WIDTH+1]);
 void show_preview();
-void vertical_move_object(Object* obj, Object* brick, int brick_counts, Object* moving_objects, int* moving_objects_count, int* current_level, int max_level);
+
+void vertical_move_object(Object* obj, Object* brick, int brick_counts, Object** moving_objects, int* moving_objects_count, int* current_level, int max_level, char map[25][81], Object* mario, int* player_score, float* camera_x);
 
 int main()
 {	
@@ -88,48 +108,49 @@ int main()
 
 	show_preview();
 	
-	create_level(current_level);
+	create_level(current_level, map, &mario, &brick, &brick_counts, 
+                 &moving_objects, &moving_objects_count, &player_score, &camera_x, max_level);
 	
 	do{
-		clear_map();
+		clear_map(map);
 		
-		if ( (mario.is_flying == false) && (GetKeyState(VK_SPACE) < 0) )
+		if (mario.is_flying == false) && (GetKeyState(VK_SPACE) < 0)
 		{
 			mario.vertical_speed = JUMP_POWER;
 		}
 		if (GetKeyState('A') < 0)
 		{
-			horizontal_move_map(1);
+			horizontal_move_map(&mario, 1, brick, brick_counts, moving_objects, moving_objects_count, &camera_x);
 		}
 		if (GetKeyState('D') < 0)
 		{
-			horizontal_move_map(-1);
+			horizontal_move_map(&mario, -1, brick, brick_counts, moving_objects, moving_objects_count, &camera_x);
 		}
 		
 		if (MAP_HEIGHT < mario.y || mario.y < 0)
 		{
-			player_dead();
+			player_dead(&current_level, map, &mario, &brick, &brick_counts, &moving_objects, &moving_objects_count, &player_score, &camera_x, max_level);
 		}
 		
-		vertical_move_object(&mario);
-		mario_collision();
+		vertical_move_object(&mario, brick, brick_counts, moving_objects, &moving_objects_count, &current_level, max_level);
+		mario_collision(&mario, moving_objects, &moving_objects_count, &player_score, &current_level);
 		
 		for(int i = 0; i < brick_counts; i++)
 		{
-			put_object_on_map(brick[i]);
+			put_object_on_map(map, brick[i], camera_x);
 		}
 		for(int i = 0; i < moving_objects_count; i++)
 		{	
-			vertical_move_object(moving_objects + i);
-			horizontal_move_obj(moving_objects + i);
-			put_object_on_map(moving_objects[i]);
+			vertical_move_object(&moving_objects[i], brick, brick_counts, moving_objects, &moving_objects_count, &current_level, max_level);
+			horizontal_move_obj(&moving_objects[i], brick, brick_counts, &moving_objects, &moving_objects_count, &current_level, max_level);
+			put_object_on_map(map, moving_objects[i], camera_x);
 		}
 		
-		put_object_on_map(mario);
-		put_score_on_map();
+		put_object_on_map(map, mario, camera_x);
+		put_score_on_map(map, player_score);
 		
 		set_current_pos(0, 0);
-		show_map();
+		show_map(map);
 		
 		Sleep(FRAME_DELAY_MS);
 	}
@@ -142,7 +163,7 @@ int main()
 }
 
 
-void clear_map(){
+void clear_map(char map[MAP_HEIGHT][MAP_WIDTH+1]){
 	for (int i = 0; i < MAP_WIDTH; i++)
 	{
 		map[0][i] = ' ';
@@ -160,11 +181,12 @@ void clear_map(){
 	}
 }
 
-void create_level(int lvl)
+void create_level(int lvl, char map[MAP_HEIGHT][MAP_WIDTH+1], Object* mario, Object** brick, int* brick_counts, 
+                  Object** moving_objects, int* moving_objects_count, int* player_score, float* camera_x, int max_level)
 {
 	system(COLOR_DEFAULT);
 
-	free_game_resources();
+	free_game_resources(brick, moving_objects);
 
 	brick_counts = 0;
 	moving_objects_count = 0;
@@ -175,62 +197,62 @@ void create_level(int lvl)
 	
 	if(lvl == 1)
 	{
-		init_object(get_new_brick(), 20, 20, 40, 5, TYPE_BRICK);
-			init_object(get_new_brick(), 30, 10, 5, 3, TYPE_BOX);
-			init_object(get_new_brick(), 50, 10, 5, 3, TYPE_BOX);
-		init_object(get_new_brick(), 60, 15, 40, 10, TYPE_BRICK);
-			init_object(get_new_brick(), 60, 5, 10, 3, TYPE_LINES);
-			init_object(get_new_brick(), 70, 5, 5, 3, TYPE_BOX);
-			init_object(get_new_brick(), 75, 5, 5, 3, TYPE_LINES);
-			init_object(get_new_brick(), 80, 5, 5, 3, TYPE_BOX);
-			init_object(get_new_brick(), 80, 5, 10, 3, TYPE_LINES);
-		init_object(get_new_brick(), 100, 20, 20, 5, TYPE_BRICK);
-		init_object(get_new_brick(), 120, 15, 10, 10, TYPE_BRICK);
-		init_object(get_new_brick(), 150, 20, 40, 5, TYPE_BRICK);
-		init_object(get_new_brick(), 210, 15, 10, 10, TYPE_EXIT);
+		init_object(get_new_brick(brick, brick_counts), 20, 20, 40, 5, TYPE_BRICK);
+			init_object(get_new_brick(brick, brick_counts), 30, 10, 5, 3, TYPE_BOX);
+			init_object(get_new_brick(brick, brick_counts), 50, 10, 5, 3, TYPE_BOX);
+		init_object(get_new_brick(brick, brick_counts), 60, 15, 40, 10, TYPE_BRICK);
+			init_object(get_new_brick(brick, brick_counts), 60, 5, 10, 3, TYPE_LINES);
+			init_object(get_new_brick(brick, brick_counts), 70, 5, 5, 3, TYPE_BOX);
+			init_object(get_new_brick(brick, brick_counts), 75, 5, 5, 3, TYPE_LINES);
+			init_object(get_new_brick(brick, brick_counts), 80, 5, 5, 3, TYPE_BOX);
+			init_object(get_new_brick(brick, brick_counts), 80, 5, 10, 3, TYPE_LINES);
+		init_object(get_new_brick(brick, brick_counts), 100, 20, 20, 5, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 120, 15, 10, 10, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 150, 20, 40, 5, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 210, 15, 10, 10, TYPE_EXIT);
 		
-		init_object(get_new_moving_objects(), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(Object** moving_objects, int* moving_objects_count), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(Object** moving_objects, int* moving_objects_count), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
 		
 		
 	}
 	
 	if(lvl == 2)
 	{
-		init_object(get_new_brick(), 20, 20, 40, 5, TYPE_BRICK);
-			init_object(get_new_brick(), 30, 10, 5, 3, TYPE_BOX);
-			init_object(get_new_brick(), 50, 10, 5, 3, TYPE_BOX);
-		init_object(get_new_brick(), 60, 15, 10, 10, TYPE_BRICK);
-		init_object(get_new_brick(), 80, 20, 20, 5, TYPE_BRICK);
-		init_object(get_new_brick(), 120, 15, 10, 10, TYPE_BRICK);
-			init_object(get_new_brick(), 122, 5, 5, 3, TYPE_BOX);
-		init_object(get_new_brick(), 150, 20, 40, 5, TYPE_BRICK);
-		init_object(get_new_brick(), 210, 15, 10, 10, TYPE_EXIT);
+		init_object(get_new_brick(brick, brick_counts), 20, 20, 40, 5, TYPE_BRICK);
+			init_object(get_new_brick(brick, brick_counts), 30, 10, 5, 3, TYPE_BOX);
+			init_object(get_new_brick(brick, brick_counts), 50, 10, 5, 3, TYPE_BOX);
+		init_object(get_new_brick(brick, brick_counts), 60, 15, 10, 10, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 80, 20, 20, 5, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 120, 15, 10, 10, TYPE_BRICK);
+			init_object(get_new_brick(brick, brick_counts), 122, 5, 5, 3, TYPE_BOX);
+		init_object(get_new_brick(brick, brick_counts), 150, 20, 40, 5, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 210, 15, 10, 10, TYPE_EXIT);
 		
-		init_object(get_new_moving_objects(), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 65, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 120, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 160, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 175, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 65, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 120, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 160, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 175, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
 		
-		init_object(get_new_moving_objects(), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
 	}
 	
 	if(lvl == 3)
 	{
-		init_object(get_new_brick(), 20, 20, 40, 5, TYPE_BRICK);
-		init_object(get_new_brick(), 80, 20, 15, 5, TYPE_BRICK);
-		init_object(get_new_brick(), 120, 15, 15, 10, TYPE_BRICK);
-		init_object(get_new_brick(), 160, 10, 15, 15, TYPE_EXIT);
+		init_object(get_new_brick(brick, brick_counts), 20, 20, 40, 5, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 80, 20, 15, 5, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 120, 15, 15, 10, TYPE_BRICK);
+		init_object(get_new_brick(brick, brick_counts), 160, 10, 15, 15, TYPE_EXIT);
 		
-		init_object(get_new_moving_objects(), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 50, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 90, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 120, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
-		init_object(get_new_moving_objects(), 130, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 25, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 50, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 80, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 90, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 120, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
+		init_object(get_new_moving_objects(moving_objects, moving_objects_count), 130, 10, ENEMY_WIDTH, ENEMY_HEIGHT, TYPE_ENEMY);
 	}
 	
 	max_level;
@@ -252,7 +274,7 @@ void delete_moving_objects(int i)
 	}
 }
 
-void free_game_resources() {
+void delete_moving_objects(Object** brick, Object** moving_objects) {
     if (brick != NULL)
 	{
         free(brick);
@@ -266,7 +288,7 @@ void free_game_resources() {
     }
 }
 
-Object *get_new_brick()
+Object *get_new_brick(Object** brick, int* brick_counts)
 {
 	brick_counts++;
 	brick = (Object*)realloc(brick, sizeof(*brick) * brick_counts);
@@ -274,7 +296,7 @@ Object *get_new_brick()
 }
 
 
-Object *get_new_moving_objects()
+Object *get_new_moving_objects(Object** moving_objects, int* moving_objects_count)
 {
 	moving_objects_count++;
 	moving_objects = (Object*)realloc(moving_objects, sizeof(*brick) * moving_objects_count);
@@ -360,7 +382,7 @@ bool is_position_on_map(int x, int y)
 	return ( (x >= 0) && (x < MAP_WIDTH) && (y >= 0) && (y < MAP_HEIGHT));
 }
 
-void mario_collision()
+void mario_collision(Object* mario, Object* moving_objects, int* moving_objects_count, int* player_score, int current_level)
 {
 	for(int i = 0; i < moving_objects_count; i++)
 	{
@@ -380,7 +402,7 @@ void mario_collision()
 				}
 				else
 				{
-					player_dead();
+					player_dead(int* current_level);
 				}
 			}
 			
@@ -395,11 +417,11 @@ void mario_collision()
 	}
 }
 
-void player_dead()
+void player_dead(int* current_level)
 {
 	system(COLOR_LOSE);
 	Sleep(RESTART_DELAY_MS);
-	create_level(current_level);
+	create_level(int lvl, char map[MAP_HEIGHT][MAP_WIDTH+1], Object* mario, Object** brick, int* brick_counts, Object** moving_objects, int* moving_objects_count, int* player_score, float* camera_x, int max_level);
 }
 
 
@@ -422,7 +444,7 @@ void put_object_on_map(Object obj){
 	}
 }
 
-void put_score_on_map()
+void put_score_on_map(char map[MAP_HEIGHT][MAP_WIDTH+1], int player_score)
 {
 	 for(int i = SCORE_X_OFFSET; i < SCORE_AREA_WIDTH; i++)
 	 {
@@ -451,7 +473,7 @@ void set_object_pos(Object *obj, float x_pos, float y_pos){
 	obj->y = y_pos;
 }
 
-void show_map(){
+void show_map(char map[MAP_HEIGHT][MAP_WIDTH+1]){
 	map[MAP_HEIGHT - 1][MAP_WIDTH - 1]= '\0';
 	for (int j = 0; j < MAP_HEIGHT; j++)
 	{
@@ -485,7 +507,7 @@ void vertical_move_object(Object *obj)
 			if ( (brick[i].object_type == TYPE_BOX) && (obj->vertical_speed < 0) && (obj == &mario) )
 			{
 				brick[i].object_type = '-';
-				init_object(get_new_moving_objects(), brick[i].x, brick[i].y-3, 3, 2, TYPE_COIN);
+				init_object(get_new_moving_objects(Object** moving_objects, int* moving_objects_count), brick[i].x, brick[i].y-3, 3, 2, TYPE_COIN);
 				moving_objects[moving_objects_count - 1].vertical_speed = COIN_DROP_SPEED;
 			}
 			obj->y -= obj->vertical_speed;
@@ -501,7 +523,7 @@ void vertical_move_object(Object *obj)
 				
 				system(COLOR_WIN);
 				Sleep(RESTART_DELAY_MS);
-				create_level(current_level);
+				create_level(int lvl, char map[MAP_HEIGHT][MAP_WIDTH+1], Object* mario, Object** brick, int* brick_counts, Object** moving_objects, int* moving_objects_count, int* player_score, float* camera_x, int max_level);
 			}
 				
 			break;
