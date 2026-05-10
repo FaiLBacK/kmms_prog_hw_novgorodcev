@@ -51,41 +51,41 @@ typedef struct SObject{
 	char object_type;
 } Object;
 
-Object mario;
-Object *brick = NULL;
-Object *moving_objects = NULL;
-char map[MAP_HEIGHT][MAP_WIDTH+1];
-
-float camera_x = 0.0f;
-int brick_counts = 0;
-int moving_objects_count;
-int max_level = 3;
-int current_level = 1;
-int player_score = 0;
-
-void clear_map();
-void create_level(int lvl);
-void delete_moving_objects(int i);
-void free_game_resources();
-Object* get_new_brick();
-Object* get_new_moving_objects();
-void horizontal_move_map(float dx);
-void horizontal_move_obj(Object* obj);
+void clear_map(char map[MAP_HEIGHT][MAP_WIDTH+1]);
+void create_level(int lvl, char map[MAP_HEIGHT][MAP_WIDTH+1], Object* mario, Object** brick, int* brick_counts, Object** moving_objects, int* moving_objects_count, int* player_score, float* camera_x, int max_level);
+void delete_moving_objects(Object** moving_objects, int* moving_objects_count, int i);
+void free_game_resources(Object** brick, Object** moving_objects);
+Object* get_new_brick(Object** brick, int* brick_counts);
+Object* get_new_moving_objects(Object** moving_objects, int* moving_objects_count);
+void horizontal_move_map(Object* mario, float dx, Object* brick, int brick_counts, Object* moving_objects, int moving_objects_count, float* camera_x);
+void horizontal_move_obj(Object* obj, Object* brick, int brick_counts);
 void init_object(Object* obj, float x_pos, float y_pos, float obj_width, float obj_height, char cur_type);
 bool is_collision(Object obj_1, Object obj_2);
 bool is_position_on_map(int x, int y);
-void mario_collision();
-void player_dead();
-void put_object_on_map(Object obj);
-void put_score_on_map();
+void mario_collision(Object* mario, Object* moving_objects, int* moving_objects_count, int* player_score, int current_level);
+void player_dead(int* current_level);
+void put_object_on_map(char map[MAP_HEIGHT][MAP_WIDTH+1], Object obj, float camera_x);
+void put_score_on_map(char map[MAP_HEIGHT][MAP_WIDTH+1], int player_score);
 void set_current_pos(int x, int y);
 void set_object_pos(Object* obj, float x_pos, float y_pos);
-void show_map();
+void show_map(char map[MAP_HEIGHT][MAP_WIDTH+1]);
 void show_preview();
-void vertical_move_object(Object* obj);
+void vertical_move_object(Object* obj, Object* brick, int brick_counts, Object* moving_objects, int* moving_objects_count, int* current_level, int max_level);
 
 int main()
 {	
+	Object mario;
+	Object *brick = NULL;
+	Object *moving_objects = NULL;
+	char map[MAP_HEIGHT][MAP_WIDTH+1];
+
+	float camera_x = 0.0f;
+	int brick_counts = 0;
+	int moving_objects_count = 0;
+	int max_level = 3;
+	int current_level = 1;
+	int player_score = 0;
+
 	show_preview();
 	
 	create_level(current_level);
@@ -134,6 +134,9 @@ int main()
 		Sleep(FRAME_DELAY_MS);
 	}
 	while(GetKeyState(VK_ESCAPE) >= 0);
+	
+	free(brick);
+	free(moving_objects);
 		
 	return 0;
 }
@@ -314,37 +317,37 @@ void horizontal_move_map(float dx)
 
 void horizontal_move_obj(Object *obj)
 {
-		(*obj).x += (*obj).horizontal_speed;
+		obj->x += obj->horizontal_speed;
 		
 		for (int i = 0; i < brick_counts; i++)
 		{
 			if (is_collision(obj[0], brick[i]))
 			{
-			obj[0].x -= obj[0].horizontal_speed;
-			obj[0].horizontal_speed = -obj[0].horizontal_speed;
+			obj->x -= obj->horizontal_speed;
+			obj->horizontal_speed = -obj->horizontal_speed;
 			return;
 			}
 		}
 		
-		if (obj[0].object_type == TYPE_ENEMY)
+		if (obj->object_type == TYPE_ENEMY)
 		{
 			Object tmp = *obj;
 			vertical_move_object(&tmp);
 			if(tmp.is_flying == true)
 			{
-				obj[0].x -= obj[0].horizontal_speed;
-				obj[0].horizontal_speed = -obj[0].horizontal_speed;
+				obj->x -= obj->horizontal_speed;
+				obj->horizontal_speed = -obj->horizontal_speed;
 			}
 		}
 }
 
 void init_object(Object *obj, float x_pos, float y_pos, float obj_width, float obj_height, char cur_type){
 	set_object_pos(obj, x_pos, y_pos);
-	(*obj).width = obj_width;
-	(*obj).height = obj_height;
-	(*obj).vertical_speed = 0;
-	(*obj).object_type = cur_type;
-	(*obj).horizontal_speed = FRICTION;
+	obj->width = obj_width;
+	obj->height = obj_height;
+	obj->vertical_speed = 0;
+	obj->object_type = cur_type;
+	obj->horizontal_speed = FRICTION;
 }
 
 bool is_collision(Object obj_1, Object obj_2)
@@ -444,8 +447,8 @@ void set_current_pos(int x, int y)
 }
 
 void set_object_pos(Object *obj, float x_pos, float y_pos){
-	(*obj).x = x_pos;
-	(*obj).y = y_pos;
+	obj->x = x_pos;
+	obj->y = y_pos;
 }
 
 void show_map(){
@@ -466,27 +469,27 @@ void show_preview()
 
 void vertical_move_object(Object *obj)
 {
-	(*obj).is_flying = true;
-	(*obj).vertical_speed += GRAVITY;
-	set_object_pos(obj, (*obj).x, (*obj).y + (*obj).vertical_speed);
+	obj->is_flying = true;
+	obj->vertical_speed += GRAVITY;
+	set_object_pos(obj, obj->x, obj->y + obj->vertical_speed);
 	
 	for (int i = 0; i < brick_counts; i++)
 	{
 		if (is_collision(*obj, brick[i]))	
 		{
-			if (obj[0].vertical_speed > 0)
+			if (obj->vertical_speed > 0)
 			{
-				obj[0].is_flying = false;
+				obj->is_flying = false;
 			}
 			
-			if ( (brick[i].object_type == TYPE_BOX) && (obj[0].vertical_speed < 0) && (obj == &mario) )
+			if ( (brick[i].object_type == TYPE_BOX) && (obj->vertical_speed < 0) && (obj == &mario) )
 			{
 				brick[i].object_type = '-';
 				init_object(get_new_moving_objects(), brick[i].x, brick[i].y-3, 3, 2, TYPE_COIN);
 				moving_objects[moving_objects_count - 1].vertical_speed = COIN_DROP_SPEED;
 			}
-			(*obj).y -= (*obj).vertical_speed;
-			(*obj).vertical_speed = 0;
+			obj->y -= obj->vertical_speed;
+			obj->vertical_speed = 0;
 
 			if(brick[i].object_type == TYPE_EXIT)
 			{
