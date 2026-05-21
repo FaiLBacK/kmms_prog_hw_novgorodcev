@@ -1,3 +1,0 @@
-C:/IT/Code/kmms_prog_hw_novgorodcev/2026-05-02_The_Best_Game_In_The_World/3_Stage/build/CMakeFiles/mario_game.dir
-C:/IT/Code/kmms_prog_hw_novgorodcev/2026-05-02_The_Best_Game_In_The_World/3_Stage/build/CMakeFiles/edit_cache.dir
-C:/IT/Code/kmms_prog_hw_novgorodcev/2026-05-02_The_Best_Game_In_The_World/3_Stage/build/CMakeFiles/rebuild_cache.dir
