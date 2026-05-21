@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+#include "constants.hpp"
+
 class Renderer
 {
 public:

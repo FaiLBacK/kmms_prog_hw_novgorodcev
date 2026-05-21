@@ -1,5 +1,6 @@
 #include <cmath>
 
+#include "constants.hpp"
 #include "level.hpp"
 #include "player.hpp"
 

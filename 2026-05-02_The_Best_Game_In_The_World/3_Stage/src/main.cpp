@@ -1,6 +1,7 @@
 #include <iostream>
 #include <locale>
 
+#include "constants.hpp"
 #include "game.hpp"
 
 int main()

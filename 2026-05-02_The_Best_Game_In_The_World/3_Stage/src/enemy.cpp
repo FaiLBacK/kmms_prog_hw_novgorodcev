@@ -1,5 +1,6 @@
 #include <cmath>
 
+#include "constants.hpp"
 #include "enemy.hpp"
 
 Enemy::Enemy(float xPos, float yPos)

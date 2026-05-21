@@ -1,6 +1,7 @@
 #include <conio.h>
 #include <cstring>
 
+#include "constants.hpp"
 #include "game.hpp"
 
 Game::Game()

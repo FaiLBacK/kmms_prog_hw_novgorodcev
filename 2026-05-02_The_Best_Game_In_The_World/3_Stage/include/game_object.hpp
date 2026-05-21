@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bounds.hpp"
+#include "constants.hpp"
 
 class GameObject
 {

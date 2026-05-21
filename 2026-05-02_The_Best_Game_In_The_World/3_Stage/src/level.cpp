@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "constants.hpp"
 #include "enemy.hpp"
 #include "level.hpp"
 #include "player.hpp"

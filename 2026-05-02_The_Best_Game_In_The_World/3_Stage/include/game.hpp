@@ -1,5 +1,6 @@
 #pragma once
 
+#include "constants.hpp"
 #include "level.hpp"
 #include "renderer.hpp"
 

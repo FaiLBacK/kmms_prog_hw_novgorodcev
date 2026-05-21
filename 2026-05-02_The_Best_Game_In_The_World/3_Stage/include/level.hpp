@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+#include "constants.hpp"
 #include "game_object.hpp"
 
 class Level

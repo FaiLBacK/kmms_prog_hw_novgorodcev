@@ -3,20 +3,25 @@
 #include "constants.hpp"
 #include "game_object.hpp"
 
-class Enemy : public GameObject
+class Level;
+
+class Player : public GameObject
 {
 public:
-    Enemy(float xPos, float yPos);
+    explicit Player(float xPos, float yPos);
     void update(float dt) override;
     void render(char buffer[MAP_HEIGHT][MAP_WIDTH + 1], float cameraX) const override;
     Bounds getBounds() const override;
     char getType() const override;
-    void reverseDirection();
+    void jump();
+    bool isOnGround() const;
+    void moveHorizontal(float direction, const Level& level);
 
 private:
     float xPos;
     float yPos;
-    float speed;
+    float verticalSpeed;
+    bool isFlying;
     const float width;
     const float height;
 };

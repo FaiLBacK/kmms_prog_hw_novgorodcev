@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <windows.h>
 
+#include "constants.hpp"
 #include "renderer.hpp"
 
 void Renderer::clearScreen() const
